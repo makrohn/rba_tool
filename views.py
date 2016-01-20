@@ -13,16 +13,16 @@ def index(request):
     }
     return HttpResponse(template.render(context, request))
 
-def accessDisplay(request, total_access):
-    template = loader.get_template('rba/access.html')
-    context = {
-        'access_list': total_access,
-    }
-    return HttpResponse(template.render(context, request))
+def getAccess(role):
+    role_access={}
+    for item in Access.objects.filter(associated_role=role):
+        role_access[item.associated_service.service_name] = item.access_level
+    return role_access
 
-def calc_access(request, role_id):
-    role = Role.objects.get(role_name=role_id)
-    total_access={}
-    for item in Access.objects.filter(pk=role_id):
-        total_access[item.associated_service] = item.access_level
-    return HttpResonseRedirect(reverse('accessCalc',args=(total_access,)))
+def accessResults(request, role_id):
+    role = Role.objects.get(pk=role_id)
+    total_access = getAccess(role)
+    for membership in role.memberships.all():
+        total_access.update(getAccess(membership))
+    response = "A %s ought to have" + repr(total_access)
+    return HttpResponse(response % role.role_name)
