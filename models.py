@@ -20,11 +20,11 @@ class Role(models.Model):
     role_name = models.CharField(max_length=200, unique=True)
     def __str__(self):
         return self.role_name
-    memberships = models.ForeignKey('self', null=True, blank=True)
+    memberships = models.ManyToManyField('self', blank=True)
 
 class Access(models.Model):
     access_level = models.CharField(max_length=400, null=True, blank=True)
     associated_role = models.ForeignKey(Role)
     associated_service = models.ForeignKey(Service)
     def __str__(self):
-        return self.access_level
+        return self.associated_service.service_name
