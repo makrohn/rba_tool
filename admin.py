@@ -10,12 +10,15 @@ class AccessInline(admin.TabularInline):
 class RoleAdmin(admin.ModelAdmin):
     fieldsets = [
         (None,               {'fields': ['role_name']}),
+        (None,               {'fields': ['memberships']}),
     ]
-#    list_display = ('role_name')
     inlines = [AccessInline]
-#    list_filter = ['role_name']
-#    search_fields = ['associated_system']
 
+class SystemAdmin(admin.ModelAdmin):
+    fieldsets = [
+        (None,               {'fields': ['system_name']}),
+    ]
+    inlines = [AccessInline]
 
 admin.site.register(Role, RoleAdmin)
-admin.site.register(System)
+admin.site.register(System, SystemAdmin)
