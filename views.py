@@ -16,13 +16,19 @@ def index(request):
 def getAccess(role):
     role_access={}
     for item in Access.objects.filter(associated_role=role):
-        role_access[item.associated_service.service_name] = item.access_level
+        role_access[item.associated_service.service_name] = str(item.access_level).split(",")
     return role_access
 
 def accessResults(request, role_id):
     role = Role.objects.get(pk=role_id)
     total_access = getAccess(role)
     for membership in role.memberships.all():
-        total_access.update(getAccess(membership))
+        privileges=(getAccess(membership))
+        for privilege in privileges:
+            if privilege in total_access:
+                for priv in privileges[privilege]:
+                    total_access[privilege].append(priv)
+            else:
+                total_access[privilege] = privileges[privilege]
     response = "A %s ought to have" + repr(total_access)
     return HttpResponse(response % role.role_name)
