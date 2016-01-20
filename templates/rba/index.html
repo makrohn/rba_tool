@@ -1,10 +1,7 @@
 {% if role_list %}
-<form method="post">
-<input type="submit" value="Calculate Access" /><br />
     {% csrf_token %}
     {% for role in role_list %}
-    <input type="radio" name="role" id="role{{ forloop.counter }}" value="{{ role.id }}" />
-    <label for="role{{ forloop.counter }}">{{ role.role_name }}</label><br />
+    <a href="/rba/{{ role.pk }}/accessResults/">{{ role.role_name }}</a><br />
 
     {% endfor %}
     {% else %}
