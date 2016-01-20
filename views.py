@@ -31,4 +31,9 @@ def accessResults(request, role_id):
             else:
                 total_access[privilege] = privileges[privilege]
     response = "A %s ought to have" + repr(total_access)
-    return HttpResponse(response % role.role_name)
+    template = loader.get_template('rba/access.html')
+    context = {
+        'access': total_access,
+        'role': role.role_name
+    }
+    return HttpResponse(template.render(context, request))
