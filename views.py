@@ -23,6 +23,6 @@ def accessDisplay(request, total_access):
 def calc_access(request, role_id):
     role = Role.objects.get(role_name=role_id)
     total_access={}
-    for item in Access.objects.filter(associated_role=role):
+    for item in Access.objects.filter(pk=role_id):
         total_access[item.associated_service] = item.access_level
-    return HttpResonseRedirect(reverse('accessDisplay',args=(total_access)))
+    return HttpResonseRedirect(reverse('accessCalc',args=(total_access,)))
