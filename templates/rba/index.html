@@ -1,0 +1,9 @@
+{% if role_list %}
+    <table>
+    {% for role in role_list %}
+        {{ role.role_name }} <br />
+    {% endfor %}
+    </table>
+{% else %}
+    <p>No roles are available.</p>
+{% endif %}
