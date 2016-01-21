@@ -21,7 +21,7 @@ class Service(models.Model):
 
 class Role(models.Model):
     """
-    Object to define the job an individual does at Dyn 
+    Object to define the job an individual does at Dyn
     or orgnaization unit to which that role belongs
     """
     role_name = models.CharField(max_length=200, unique=True)
