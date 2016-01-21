@@ -1,3 +1,4 @@
+"""Where the magic happens to figure out what a new hire needs"""
 from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse
 from django.template import loader
