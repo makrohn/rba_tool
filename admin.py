@@ -10,7 +10,7 @@ class AccessInline(admin.TabularInline):
 class RoleAdmin(admin.ModelAdmin):
     fieldsets = [
         (None,               {'fields': ['role_name']}),
-        (None,               {'fields': ['memberships']}),
+        (None,               {'fields': ['membership']}),
     ]
     inlines = [AccessInline]
 

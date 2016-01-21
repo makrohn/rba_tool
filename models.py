@@ -20,7 +20,7 @@ class Role(models.Model):
     role_name = models.CharField(max_length=200, unique=True)
     def __str__(self):
         return self.role_name
-    memberships = models.ManyToManyField('self', blank=True)
+    membership = models.ForeignKey('self', blank=True, null=True)
 
 class Access(models.Model):
     access_level = models.CharField(max_length=400, null=True, blank=True)

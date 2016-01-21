@@ -22,14 +22,13 @@ def getAccess(role):
 def accessResults(request, role_id):
     role = Role.objects.get(pk=role_id)
     total_access = getAccess(role)
-    for membership in role.memberships.all():
-        privileges=(getAccess(membership))
-        for privilege in privileges:
-            if privilege in total_access:
-                for priv in privileges[privilege]:
-                    total_access[privilege].append(priv)
-            else:
-                total_access[privilege] = privileges[privilege]
+    privileges=(getAccess(role.membership))
+    for privilege in privileges:
+        if privilege in total_access:
+            for priv in privileges[privilege]:
+                total_access[privilege].append(priv)
+        else:
+            total_access[privilege] = privileges[privilege]
     response = "A %s ought to have" + repr(total_access)
     template = loader.get_template('rba/access.html')
     context = {
