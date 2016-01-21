@@ -22,7 +22,11 @@ def getAccess(role):
 def accessResults(request, role_id):
     role = Role.objects.get(pk=role_id)
     total_access = getAccess(role)
+    roles_checked = [role]
     while role.membership:
+        if role.membership in roles_checked:
+            response = "Role loop detected at %s!"
+            return HttpResponse(response % role)
         privileges=(getAccess(role.membership))
         for privilege in privileges:
             if privilege in total_access:
@@ -31,10 +35,11 @@ def accessResults(request, role_id):
             else:
                 total_access[privilege] = privileges[privilege]
         role = role.membership
+        roles_checked.append(role)
     response = "A %s ought to have" + repr(total_access)
     template = loader.get_template('rba/access.html')
     context = {
         'access': total_access,
-        'role': role.role_name
+        'role': Role.objects.get(pk=role_id).role_name
     }
     return HttpResponse(template.render(context, request))
