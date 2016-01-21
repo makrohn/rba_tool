@@ -27,7 +27,7 @@ def accessResults(request, role_id):
         if role.membership in roles_checked:
             response = "Role loop detected at %s!"
             return HttpResponse(response % role)
-        privileges=(getAccess(role.membership))
+        privileges=getAccess(role.membership)
         for privilege in privileges:
             if privilege in total_access:
                 for priv in privileges[privilege]:
