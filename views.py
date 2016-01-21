@@ -36,7 +36,6 @@ def accessResults(request, role_id):
                 total_access[privilege] = privileges[privilege]
         role = role.membership
         roles_checked.append(role)
-    response = "A %s ought to have" + repr(total_access)
     template = loader.get_template('rba/access.html')
     context = {
         'access': total_access,
