@@ -21,10 +21,10 @@ def read_new_roles(file):
     new_roles = {}
     with open(file) as access_file:
         for line in access_file.readlines()[1:]:
-            try:
-                new_roles[line.strip().split(",")[0]] = line.strip().split(",")[1]
-            except:
+            if line.strip().split(",")[1] == "":
                 new_roles[line.strip().split(",")[0]] = None
+            else:
+                new_roles[line.strip().split(",")[0]] = line.strip().split(",")[1]
     return new_roles
 
 def read_current_roles():
