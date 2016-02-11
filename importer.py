@@ -2,7 +2,7 @@ from models import Service,Role,Access
 
 def read_new_services(file):
     with open(file) as access_file:
-        return access_file.readline().strip().split(",")
+        return access_file.readline().strip().split(",")[2:]
 
 def read_current_services():
     current_services = []
