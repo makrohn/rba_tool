@@ -24,7 +24,7 @@ def read_new_roles(file):
             try:
                 new_roles[line.strip().split(",")[0]] = line.strip().split(",")[1]
             except:
-                new_roles[line.strip().split(",")[0]] = ""
+                new_roles[line.strip().split(",")[0]] = None
     return new_roles
 
 def read_current_roles():
