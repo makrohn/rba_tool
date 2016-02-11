@@ -18,10 +18,13 @@ def import_services(service_list):
             new_service.save()
 
 def read_new_roles(file):
-    new_roles = []
+    new_roles = {}
     with open(file) as access_file:
         for line in access_file.readlines()[1:]:
-            new_roles.append(line.strip().split(",")[0])
+            try:
+                new_roles[line.strip().split(",")[0]] = line.strip().split(",")[1]
+            except:
+                new_roles[line.strip().split(",")[0]] = ""
     return new_roles
 
 def read_current_roles():
