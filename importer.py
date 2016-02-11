@@ -33,9 +33,25 @@ def read_current_roles():
         current_roles.append(role.role_name)
     return current_roles
 
-def import_roles(role_list):
-    current_roles = read_current_roles()
-    for role in role_list:
-        if role not in current_roles:
+def update_role(role, membership_check):
+    role_check = Role.objects.get(role_name=role)
+    if role_check.membership != membership_check:
+        try:
+            new_membership = Role.objects.get(role_name=membership_check)
+            role_check.membership = new_membership
+            role_check.save()
+        except:
+            new_role = Role(role_name=membership_check)
+            new_role.save()
+            new_membership = new_role
+            role_check.membership = new_membership
+            role_check.save()
+
+def import_roles(role_dict):
+    for role in role_dict:
+        try:
+            update_role(role,role_dict[role])
+        except:
             new_role = Role(role_name=role)
             new_role.save()
+            update_role(role,role_dict[role])
