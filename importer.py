@@ -39,11 +39,3 @@ def import_roles(role_list):
         if role not in current_roles:
             new_role = Role(role_name=role)
             new_role.save()
-
-def read_new_memberships(file):
-    new_memberships = {}
-    with open(file) as access_file:
-        for line in access_file.readlines()[1:]:
-            new_memberships[line.strip().split(",")[0]]\
-                = line.strip().split(",")[1]
-    return new_memberships
