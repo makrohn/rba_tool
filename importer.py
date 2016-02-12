@@ -81,3 +81,10 @@ def write_all_access(file,service_list):
             role_name = access_data[0]
             access_dict = access_data[1]
             write_new_access(role_name,access_dict)
+
+def import_csv(file):
+    new_services = read_new_services(file)
+    import_services(new_services)
+    new_roles = read_new_roles(file)
+    import_roles(new_roles)
+    write_all_access(file,new_services)
