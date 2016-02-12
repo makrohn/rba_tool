@@ -72,3 +72,11 @@ def write_new_access(role_text,access_dict):
             access_level = access_dict[service_text]
             )
         new_access.save()
+
+def write_all_access(file,service_list):
+    with open(file) as access_file:
+        for line in access_file.readlines()[1:]:
+            access_data = read_access_line(line,service_list)
+            role_name = access_data[0]
+            access_dict = access_data[1]
+            write_new_access(role_name,access_dict)
