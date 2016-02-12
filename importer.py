@@ -55,3 +55,11 @@ def import_roles(role_dict):
             new_role = Role(role_name=role)
             new_role.save()
             update_role(role,role_dict[role])
+
+def read_access_line(line, service_list):
+    new_access = {}
+    line_items = line.strip().split(",")[2:]
+    for item in line_items:
+        service_name = service_list[line_items.index(item)]
+        new_access[service_name] = item
+    return line.strip().split(",")[0],new_access
