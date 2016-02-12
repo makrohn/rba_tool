@@ -59,10 +59,10 @@ def import_roles(role_dict):
 def read_access_line(line, service_list):
     new_access = {}
     line_items = line.strip().split(",")[2:]
-    for item in line_items:
-        if item != "":
-            service_name = service_list[line_items.index(item)]
-            new_access[service_name] = item
+    for service in service_list:
+        if line_items[service_list.index(service)] != "":
+            service_name = service
+            new_access[service_name] = line_items[service_list.index(service)]
     return line.strip().split(",")[0],new_access
 
 def write_new_access(role_text,access_dict):
