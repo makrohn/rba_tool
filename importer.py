@@ -60,8 +60,9 @@ def read_access_line(line, service_list):
     new_access = {}
     line_items = line.strip().split(",")[2:]
     for item in line_items:
-        service_name = service_list[line_items.index(item)]
-        new_access[service_name] = item
+        if item != "":
+            service_name = service_list[line_items.index(item)]
+            new_access[service_name] = item
     return line.strip().split(",")[0],new_access
 
 def write_new_access(role_text,access_dict):
