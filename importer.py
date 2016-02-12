@@ -60,9 +60,12 @@ def read_access_line(line, service_list):
     new_access = {}
     line_items = line.strip().split(",")[2:]
     for service in service_list:
-        if line_items[service_list.index(service)] != "":
-            service_name = service
-            new_access[service_name] = line_items[service_list.index(service)]
+        try:
+            if line_items[service_list.index(service)] != "":
+                service_name = service
+                new_access[service_name] = line_items[service_list.index(service)]
+        except:
+            print "Error",line.strip().split(",")[0],service
     return line.strip().split(",")[0],new_access
 
 def write_new_access(role_text,access_dict):
