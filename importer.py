@@ -63,3 +63,12 @@ def read_access_line(line, service_list):
         service_name = service_list[line_items.index(item)]
         new_access[service_name] = item
     return line.strip().split(",")[0],new_access
+
+def write_new_access(role_text,access_dict):
+    for service_text in access_dict:
+        new_access = Access(
+            associated_role = Role.objects.get(role_name=role_text),
+            associated_service = Service.objects.get(service_name=service_text),
+            access_level = access_dict[service_text]
+            )
+        new_access.save()
