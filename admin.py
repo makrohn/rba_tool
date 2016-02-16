@@ -10,6 +10,7 @@ class AccessInline(admin.TabularInline):
 
 class RoleAdmin(admin.ModelAdmin):
     """Edit role name, select membership, show service access levels in admin view"""
+    search_fields = ['role_name']
     fieldsets = [
         (None,               {'fields': ['role_name']}),
         (None,               {'fields': ['membership']}),
@@ -18,6 +19,7 @@ class RoleAdmin(admin.ModelAdmin):
 
 class ServiceAdmin(admin.ModelAdmin):
     """Edit server name, show role access levels in admin view"""
+    search_fields = ['service_name']
     fieldsets = [
         (None,               {'fields': ['service_name']}),
         (None,               {'fields': ['responsible_team']}),
