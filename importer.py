@@ -1,5 +1,5 @@
-from models import Service,Role,Access
 """Command-line only script to import database from csv"""
+from models import Service,Role,Access
 
 def read_new_services(file):
     """Open a file and load new services from first row"""
