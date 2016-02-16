@@ -30,11 +30,11 @@ def read_new_roles(file):
     new_roles = {}
     with open(file) as access_file:
         for line in access_file.readlines()[1:]:
-            if line.strip().split(",")[1] == "":
-                new_roles[line.strip().split(",")[0]] = None
+            (role, membership) = line.strip().split(",")[:2]
+            if membership == "":
+                new_roles[role] = None
             else:
-                new_roles[line.strip().split(",")[0]] = \
-                    line.strip().split(",")[1]
+                new_roles[role] = membership
     return new_roles
 
 
@@ -93,7 +93,7 @@ def write_new_access(role_text, access_dict):
     for service_text in access_dict:
         new_access = Access(
             associated_role=Role.objects.get(role_name=role_text),
-            associated_service=service.objects.get(service_name=service_text),
+            associated_service=Service.objects.get(service_name=service_text),
             access_level=access_dict[service_text]
             )
         new_access.save()
