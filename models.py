@@ -24,6 +24,12 @@ class Service(models.Model):
     def service_color(self):
         return self.responsible_team.color
 
+    def service_team(self):
+        return self.responsible_team.team_name
+
+    def service_email(self):
+        return self.responsible_team.email_address
+
     def __str__(self):
         return self.service_name
 
@@ -45,9 +51,6 @@ class Access(models.Model):
     access_level = models.CharField(max_length=400, null=True, blank=True)
     associated_role = models.ForeignKey(Role)
     associated_service = models.ForeignKey(Service)
-
-    def color(self):
-        return self.associated_service.service_color()
 
     def __str__(self):
         return self.associated_service.service_name
