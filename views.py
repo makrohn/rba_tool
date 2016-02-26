@@ -48,15 +48,26 @@ def access_results(request, role_id):
         roles_checked.append(role)
     template = loader.get_template('rba/access.html')
     colors = {}
+    owners = {}
+    teams = []
+    for team in Team.objects.all():
+        teams.append(team.team_name)
+    teams.append("")
     for key in total_access:
         try:
             colors[key] = Service.objects.get(service_name=key).service_color()
         except:
             colors[key] = "000000"
+        try:
+            owners[key] = Service.objects.get(service_name=key).service_team()
+        except:
+            owners[key] = ""
     context = {
         'access': total_access,
         'role': Role.objects.get(pk=role_id).role_name,
-        'colors': colors
+        'colors': colors,
+        'owners': owners,
+        'teams': teams,
     }
     return HttpResponse(template.render(context, request))
 
