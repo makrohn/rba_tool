@@ -1,7 +1,7 @@
 <h2>Access for {{ role }}</h2>
 {% if access %}
-{% for key,val in access.items %}
-{{ key }} - {% for thing in val %}{{ thing }} {% endfor %} <br />
+{% for service,privs in access.items %}
+<font color="{{ colors|get_item:service }}">{{ service }}</font> - {% for thing in privs %}{{ thing }} {% endfor %}  <br />
 {% endfor %}
 {% else %}
 <p>derp</p>

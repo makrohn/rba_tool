@@ -5,6 +5,8 @@ from django.template import loader
 from .models import Role, Service, Access, Team
 from django.shortcuts import get_object_or_404, render
 from django.core.urlresolvers import reverse
+from django.template.defaulttags import register
+
 
 def index(request):
     """Generate list of clickable links to find access"""
@@ -15,15 +17,18 @@ def index(request):
     }
     return HttpResponse(template.render(context, request))
 
+
 def get_access(role):
     """Compile all accesses for a given role"""
-    role_access={}
+    role_access = {}
     for item in Access.objects.filter(associated_role=role):
-        role_access[item.associated_service.service_name] = str(item.access_level).split(",")
+        role_access[item.associated_service.service_name] = \
+            str(item.access_level).split(",")
     return role_access
 
+
 def access_results(request, role_id):
-    """When someone clicks a link, find all systems that role needs access to"""
+    """Find all systems that role needs access to"""
     role = Role.objects.get(pk=role_id)
     total_access = get_access(role)
     roles_checked = [role]
@@ -32,7 +37,7 @@ def access_results(request, role_id):
             """Prevent infinite loops if role is eventually member of itself"""
             response = "Role loop detected at %s!"
             return HttpResponse(response % role)
-        privileges=get_access(role.membership)
+        privileges = get_access(role.membership)
         for privilege in privileges:
             if privilege in total_access:
                 for priv in privileges[privilege]:
@@ -42,8 +47,21 @@ def access_results(request, role_id):
         role = role.membership
         roles_checked.append(role)
     template = loader.get_template('rba/access.html')
+    colors = {}
+    for key in total_access:
+        try:
+            colors[key] = Service.objects.get(service_name=key).service_color()
+        except:
+            colors[key] = "000000"
     context = {
         'access': total_access,
-        'role': Role.objects.get(pk=role_id).role_name
+        'role': Role.objects.get(pk=role_id).role_name,
+        'colors': colors
     }
     return HttpResponse(template.render(context, request))
+
+
+@register.filter
+def get_item(dictionary, key):
+    """For looking up dictionary values in templates"""
+    return dictionary.get(key)
