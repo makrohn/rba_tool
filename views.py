@@ -5,6 +5,7 @@ from django.template import loader
 from .models import Role, Service, Access, Team
 from django.shortcuts import get_object_or_404, render
 from django.core.urlresolvers import reverse
+from django.template.defaulttags import register
 
 
 def index(request):
@@ -46,8 +47,21 @@ def access_results(request, role_id):
         role = role.membership
         roles_checked.append(role)
     template = loader.get_template('rba/access.html')
+    colors = {}
+    for key in total_access:
+        try:
+            colors[key] = Service.objects.get(service_name=key).service_color()
+        except:
+            colors[key] = "000000"
     context = {
         'access': total_access,
-        'role': Role.objects.get(pk=role_id).role_name
+        'role': Role.objects.get(pk=role_id).role_name,
+        'colors': colors
     }
     return HttpResponse(template.render(context, request))
+
+
+@register.filter
+def get_item(dictionary, key):
+    """For looking up dictionary values in templates"""
+    return dictionary.get(key)

@@ -10,6 +10,7 @@ class Team(models.Model):
     """Object to define team responsible for provisioning access to service"""
     team_name = models.CharField(max_length=200, unique=True)
     email_address = models.CharField(max_length=200, unique=True)
+    color = models.CharField(max_length=200, blank=True, unique=False)
 
     def __str__(self):
         return self.team_name
@@ -19,6 +20,9 @@ class Service(models.Model):
     """Object to define a server or SaaS product"""
     service_name = models.CharField(max_length=200, unique=True)
     responsible_team = models.ForeignKey(Team, null=True, blank=True)
+
+    def service_color(self):
+        return self.responsible_team.color
 
     def __str__(self):
         return self.service_name
@@ -41,6 +45,9 @@ class Access(models.Model):
     access_level = models.CharField(max_length=400, null=True, blank=True)
     associated_role = models.ForeignKey(Role)
     associated_service = models.ForeignKey(Service)
+
+    def color(self):
+        return self.associated_service.service_color()
 
     def __str__(self):
         return self.associated_service.service_name
