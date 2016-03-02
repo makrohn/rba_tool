@@ -80,6 +80,7 @@ def access_results(request, role_id):
 
 
 def build_members(role):
+    """Figure out what members a primary role inherits"""
     members = [role]
     more_roles = Role.objects.filter(membership=role)
     roles_to_check = []
@@ -97,6 +98,7 @@ def build_members(role):
 
 
 def get_service_access(service, access):
+    """Find all roles that need access to a service"""
     accesses = Access.objects.filter(associated_service=service)
     service_access = access
     for access in accesses:
@@ -114,6 +116,7 @@ def get_service_access(service, access):
 
 
 def service_audit(request, service_id):
+    """Load a webpage with all privileged roles to a service"""
     template = loader.get_template('rba/audit.html')
     service = Service.objects.get(pk=service_id)
     access = {}
@@ -126,6 +129,7 @@ def service_audit(request, service_id):
 
 
 def service_list(request):
+    """List all services and links to audit pages"""
     service_list = Service.objects.order_by("service_name")
     template = loader.get_template('rba/services.html')
     context = {
