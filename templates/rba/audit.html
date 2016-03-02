@@ -1,0 +1,6 @@
+<h2>Role audit for {{service}}</h2>
+{% for role, privs in access.items %}
+{{ role }} - {% for priv in privs %}{{priv}}, {% endfor %}<br />
+{% endfor %}
+{{more_roles}}<br />
+Members{{ members}}
