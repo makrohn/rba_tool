@@ -78,13 +78,14 @@ def access_results(request, role_id):
     }
     return HttpResponse(template.render(context, request))
 
+
 def build_members(role):
     members = [role]
     more_roles = Role.objects.filter(membership=role)
     roles_to_check = []
     for role in more_roles:
         roles_to_check.append(role)
-    while len(roles_to_check)>0:
+    while len(roles_to_check) > 0:
         for new_role in roles_to_check:
             if new_role in members:
                 return Role_Loop
@@ -94,8 +95,9 @@ def build_members(role):
             roles_to_check.remove(new_role)
     return members
 
+
 def get_service_access(service, access):
-    accesses = Access.objects.filter(associated_service = service)
+    accesses = Access.objects.filter(associated_service=service)
     service_access = access
     for access in accesses:
         primary_role = access.associated_role
@@ -110,6 +112,7 @@ def get_service_access(service, access):
                 service_access[role.role_name] = [access.access_level]
     return service_access
 
+
 def service_audit(request, service_id):
     template = loader.get_template('rba/audit.html')
     service = Service.objects.get(pk=service_id)
@@ -121,13 +124,15 @@ def service_audit(request, service_id):
     }
     return HttpResponse(template.render(context, request))
 
+
 def service_list(request):
-    service_list=Service.objects.order_by("service_name")
+    service_list = Service.objects.order_by("service_name")
     template = loader.get_template('rba/services.html')
     context = {
         'service_list': service_list,
     }
     return HttpResponse(template.render(context, request))
+
 
 @register.filter
 def get_item(dictionary, key):
