@@ -86,6 +86,8 @@ def build_members(role):
         roles_to_check.append(role)
     while len(roles_to_check)>0:
         for new_role in roles_to_check:
+            if new_role in members:
+                return Role_Loop
             members.append(new_role)
             for new_member in Role.objects.filter(membership=new_role):
                 roles_to_check.append(new_member)
@@ -116,6 +118,14 @@ def service_audit(request, service_id):
     context = {
         'service': service.service_name,
         'access': access,
+    }
+    return HttpResponse(template.render(context, request))
+
+def service_list(request):
+    service_list=Service.objects.order_by("service_name")
+    template = loader.get_template('rba/services.html')
+    context = {
+        'service_list': service_list,
     }
     return HttpResponse(template.render(context, request))
 

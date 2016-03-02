@@ -9,4 +9,5 @@ urlpatterns = [
         name='access_results'),
     url(r'^(?P<service_id>[0-9]+)/service_audit/$', views.service_audit,
         name='service_audit'),
+    url(r'^services$', views.service_list, name='service_list'),
 ]
