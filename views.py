@@ -50,6 +50,7 @@ def access_results(request, role_id):
     colors = {}
     owners = {}
     teams = []
+    contacts = {}
     for team in Team.objects.all():
         teams.append(team.team_name)
     teams.append("")
@@ -62,12 +63,18 @@ def access_results(request, role_id):
             owners[key] = Service.objects.get(service_name=key).service_team()
         except:
             owners[key] = ""
+    for team in Team.objects.all():
+        try:
+            contacts[team.team_name] = team.contact_info
+        except:
+            contacts[team.team_name] = ""
     context = {
         'access': total_access,
         'role': Role.objects.get(pk=role_id).role_name,
         'colors': colors,
         'owners': owners,
         'teams': teams,
+        'contacts': contacts,
     }
     return HttpResponse(template.render(context, request))
 

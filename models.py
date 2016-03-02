@@ -9,7 +9,7 @@ from django.utils import timezone
 class Team(models.Model):
     """Object to define team responsible for provisioning access to service"""
     team_name = models.CharField(max_length=200, unique=True)
-    email_address = models.CharField(max_length=200, unique=True)
+    contact_info = models.CharField(max_length=200, unique=True)
     color = models.CharField(max_length=200, blank=True, unique=False)
 
     def __str__(self):
@@ -26,9 +26,6 @@ class Service(models.Model):
 
     def service_team(self):
         return self.responsible_team.team_name
-
-    def service_email(self):
-        return self.responsible_team.email_address
 
     def __str__(self):
         return self.service_name

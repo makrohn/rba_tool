@@ -1,7 +1,7 @@
 <h2>Access for {{ role }}</h2>
 {% if access %}
 {% for team in teams %}
-<br />{{ team }}<br />
+<br /><a href="{{ contacts|get_item:team }}">{{ team }}</a><br />
 {% for service,privs in access.items %}
 {% if owners|get_item:service == team %}
 <font color="{{ colors|get_item:service }}">{{ service }}</font> - {% for thing in privs %}{{ thing }} {% endfor %}  <br />
