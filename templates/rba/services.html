@@ -1,0 +1,9 @@
+{% if service_list %}
+    {% csrf_token %}
+    {% for service in service_list %}
+    <a href="/rba/{{ service.pk }}/service_audit/">{{ service.service_name }}</a><br />
+
+    {% endfor %}
+    {% else %}
+    <p>No services are available.</p>
+{% endif %}

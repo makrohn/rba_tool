@@ -79,6 +79,65 @@ def access_results(request, role_id):
     return HttpResponse(template.render(context, request))
 
 
+def build_members(role):
+    """Figure out what members a primary role inherits"""
+    members = [role]
+    more_roles = Role.objects.filter(membership=role)
+    roles_to_check = []
+    for role in more_roles:
+        roles_to_check.append(role)
+    while len(roles_to_check) > 0:
+        for new_role in roles_to_check:
+            if new_role in members:
+                return Role_Loop
+            members.append(new_role)
+            for new_member in Role.objects.filter(membership=new_role):
+                roles_to_check.append(new_member)
+            roles_to_check.remove(new_role)
+    return members
+
+
+def get_service_access(service, access):
+    """Find all roles that need access to a service"""
+    accesses = Access.objects.filter(associated_service=service)
+    service_access = access
+    for access in accesses:
+        primary_role = access.associated_role
+        roles = [primary_role]
+        for member in build_members(primary_role):
+            roles.append(member)
+        for role in roles:
+            if role.role_name in service_access:
+                if access.access_level not in service_access[role.role_name]:
+                    service_access[role.role_name].append(access.access_level)
+            else:
+                service_access[role.role_name] = [access.access_level]
+    return service_access
+
+
+def service_audit(request, service_id):
+    """Load a webpage with all privileged roles to a service"""
+    template = loader.get_template('rba/audit.html')
+    service = Service.objects.get(pk=service_id)
+    access = {}
+    access = get_service_access(service, access)
+    context = {
+        'service': service.service_name,
+        'access': access,
+    }
+    return HttpResponse(template.render(context, request))
+
+
+def service_list(request):
+    """List all services and links to audit pages"""
+    service_list = Service.objects.order_by("service_name")
+    template = loader.get_template('rba/services.html')
+    context = {
+        'service_list': service_list,
+    }
+    return HttpResponse(template.render(context, request))
+
+
 @register.filter
 def get_item(dictionary, key):
     """For looking up dictionary values in templates"""

@@ -7,4 +7,7 @@ urlpatterns = [
     url(r'^$', views.index, name='index'),
     url(r'^(?P<role_id>[0-9]+)/access_results/$', views.access_results,
         name='access_results'),
+    url(r'^(?P<service_id>[0-9]+)/service_audit/$', views.service_audit,
+        name='service_audit'),
+    url(r'^services$', views.service_list, name='service_list'),
 ]
