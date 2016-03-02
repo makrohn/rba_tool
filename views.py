@@ -78,6 +78,11 @@ def access_results(request, role_id):
     }
     return HttpResponse(template.render(context, request))
 
+def service_audit(request, service_id):
+    template = loader.get_template('rba/audit.html')
+    context = {
+    }
+    return HttpResponse(template.render(context, request))
 
 @register.filter
 def get_item(dictionary, key):
