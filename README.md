@@ -28,6 +28,8 @@ Teams: A responsible team for a service and how to contact them.
 
 Each role, in addition to being an object itself, can also be a member of another role.
 
+End Usage:
+==========
 Once you've set up some Roles with access to some Servers, go to:
 http://myserver/rba
 And you should see a list of roles. Click any role to see a quick calculation of what access a person in that role should be granted, as well as, organizationally, what they might inherit.
